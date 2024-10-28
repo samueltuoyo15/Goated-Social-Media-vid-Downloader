@@ -8,7 +8,7 @@
     "start": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "OritseWeyinmi Samuel Tuoyo",
   "license": "ISC",
   "description": "",
   "dependencies": {

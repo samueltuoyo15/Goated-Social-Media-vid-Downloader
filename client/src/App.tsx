@@ -71,12 +71,12 @@ const App = () => {
         <div className="mt-5">
           <p className="text-white">{videoDescription}</p>
           {videoDownloadLink && (
-            <a onClick={() => videoDownloadLink} className="mx-auto text-center text-blue-500 block mb-5 mt-4">
+            <a download href={videoDownloadLink} className="mx-auto text-center text-blue-500 block mb-5 mt-4">
               Download Video + Audio
             </a>
           )}
           {videoDownloadLinkMP3 && (
-            <a onClick={() => videoDownloadLinkMP3} className="mx-auto text-center text-blue-500 block">
+            <a download href={videoDownloadLinkMP3} className="mx-auto text-center text-blue-500 block">
               Download Audio Only
             </a>
           )}
