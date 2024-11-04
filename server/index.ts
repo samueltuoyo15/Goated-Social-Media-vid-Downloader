@@ -4,7 +4,6 @@ import path from 'path'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
-const app = express()
 
 dotenv.config();
 
@@ -22,7 +21,6 @@ interface VideoData {
   downloadLinkMP3: string;
   downloadLink: string;
 }
-const port = process.env.PORT
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
