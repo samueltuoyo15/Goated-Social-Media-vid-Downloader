@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
-app.get('/yt_downloader', async (req, res) => {
+app.get('/download', async (req, res) => {
   const videoURL = req.query.url;
   if (!videoURL) {
     res.status(400).send('YouTube URL is required');
