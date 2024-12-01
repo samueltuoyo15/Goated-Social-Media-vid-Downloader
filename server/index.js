@@ -23,7 +23,7 @@ app.get('/download', async (req, res) => {
   }
 
   try {
-    const response = await axios.get(process.env.END_POINT, {
+    const response = await axios.get('https://youtube-video-and-shorts-downloader1.p.rapidapi.com/api/getYTVideo', {
       params: { url: videoURL },
       headers: {
         'x-rapidapi-key': process.env.API_KEY,
