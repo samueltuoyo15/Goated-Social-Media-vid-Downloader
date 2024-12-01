@@ -2,6 +2,7 @@
   "name": "backend-multi-video-downloader",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "start": "ts-node index.ts",
     "dev": "nodemon index.ts"
