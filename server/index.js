@@ -1,60 +1,51 @@
-const express = require('express');
-const axios = require('axios');
-const path = require('path');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const { fileURLToPath } = require('url');
-
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv'
+import { fileURLToPath } from 'url';
+import path, {dirname} from 'path';
+import axios from 'axios';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
+
 app.get('/download', async (req, res) => {
-  const videoURL = req.query.url;
-  if (!videoURL) {
-    res.status(400).send('YouTube URL is required');
-    return;
-  }
+    const videoUrl = req.query.url;
+    if (!videoUrl) {
+        return res.status(400).send('Video URL is required.');
+    }
 
-  try {
-    const response = await axios.get('https://youtube-video-and-shorts-downloader1.p.rapidapi.com/api/getYTVideo', {
-      params: { url: videoURL },
-      headers: {
-        'x-rapidapi-key': process.env.API_KEY,
-        'x-rapidapi-host': process.env.HOST,
-      },
-    });
-    const downloadLink = response.data.links[8].link;
-    const videoResponse = await axios.get(downloadLink, { responseType: 'arraybuffer' });
-
-    const blob = Buffer.from(videoResponse.data);
-    const blobUrl = `data:video/mp4;base64,${blob.toString('base64')}`;
-
-    const videoData = {
-      description: response.data.description,
-      picture: response.data.picture,
-      downloadLinkMP3: response.data.links[0].link,
-      downloadLink: blobUrl,
+    const options = {
+        method: 'GET',
+        url: 'https://social-media-video-downloader.p.rapidapi.com/smvd/get/all',
+        params: {
+            url: videoUrl
+        },
+        headers: {
+            'X-RapidAPI-Key': process.env.API_KEY,
+            'X-RapidAPI-Host': process.env.HOST,
+        }
     };
-    res.set({
-      'Content-Disposition': `attachment; filename="${videoData.description}.mp4"`,
-      'Content-Type': 'video/mp4',
-      'Access-Control-Allow-Origin': '*',
-    });
 
-    res.json(videoData);
-  } catch (error) {
-    console.error('Error fetching video:', error);
-    res.status(500).send('Error downloading the video');
-  }
+    try {
+        const response = await axios.request(options);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(`Error occurred: ${error.message || error}`);
+    }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+
+const PORT = 3000; 
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
