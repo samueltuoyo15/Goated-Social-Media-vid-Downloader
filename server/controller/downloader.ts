@@ -34,7 +34,7 @@ const extractMetaData = (url: string): Promise<VideoMetaData> => {
   })
 }
 
-export const fetchMetaData = async (req: Request, res: Response) Promise<response> => {
+export const fetchMetaData = async (req: Request, res: Response): Promise<response> => {
   const videourl = req.query.url as string 
   if(!videourl) return res.status(400).json({error: "Video Url is Required"})
   
