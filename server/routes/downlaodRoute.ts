@@ -1,5 +1,5 @@
-import { fetchMetaData, download } from "../controller/downloader"
 import { Router } from "express"
+import { fetchMetaData, download } from "../controller/downloader"
 
 const router = Router()
 

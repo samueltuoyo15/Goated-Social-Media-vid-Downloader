@@ -47,9 +47,3 @@ export const fetchMetaData = async (req: Request, res: Response) => {
   }
 }
 
-export const downlaod = async (req: Request, res: Response) => {
-  const videourl = req.query.url as string 
-  if(!videourl) return res.status(400).send("Video Url is Required")
-  
-  const outputFileName = 
-}
