@@ -1,22 +1,19 @@
-import express, {Application, Request, Response} from 'express';
-import dotenv from 'dotenv'
-import { fileURLToPath } from 'url';
-import path, {dirname} from 'path';
+import express, {Application} from 'express';
+//import { fileURLToPath } from 'url';
+//import path, {dirname} from 'path';
 import helmet from "helmet";
-import downlaodRoute from "./routes/downlaodRoute";
-import axios from 'axios';
-dotenv.config();
+import downloadRoute from "./routes/downloadRoute";
 
 const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
-app.use(downlaodRoute);
+app.use(downloadRoute);
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+//const __filename = fileURLToPath(import.meta.url)
+//const __dirname = dirname(__filename)
+//app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 
 const PORT = process.env.PORT || 10000; 
