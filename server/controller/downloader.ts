@@ -21,10 +21,10 @@ const extractMetaData = (url: string): Promise<VideoMetaData> => {
           thumbnail: metaData.thumbnail || "",
           duration: metaData.duration || 0,
           category: metaData.categories?.[0] || "Uncharacterized",
-          links: metaData.formats.filter((format: any) => format.url).map((format: any) => {
+          links: metaData.formats.filter((format: any) => format.url).map((format: any) => ({
             link: format.url,
             quality: format.format,
-          }),
+          })),
         }
         resolve(videoData)
       } catch(error){
@@ -34,7 +34,7 @@ const extractMetaData = (url: string): Promise<VideoMetaData> => {
   })
 }
 
-export const fetchMetaData = async (req: Request, res: Response): Promise<response> => {
+export const fetchMetaData = async (req: Request, res: Response): Promise<any> => {
   const videourl = req.query.url as string 
   if(!videourl) return res.status(400).json({error: "Video Url is Required"})
   
