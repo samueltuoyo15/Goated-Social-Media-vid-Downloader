@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
-app.use("/proxy", downloadRoute);
+app.use(downloadRoute);
 
 app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 
