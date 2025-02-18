@@ -1,8 +1,8 @@
-import { fetchMetaData } from "../controller/downloader"
-import { Router } from "express"
+const {fetchMetaData} = require("../controller/downloader")
+const {Router} = require("express")
 
 const router = Router()
 
 router.get("/metadata", fetchMetaData)
 
-export default router 
+module.exports = router
