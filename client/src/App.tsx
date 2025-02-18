@@ -7,6 +7,22 @@ const App = () => {
   const [videoData, setVideoData] = useState(null);
   const [selectedUrl, setSelectedUrl] = useState('');
 
+  const downloadVideo = async (link) => {
+    try {
+      const response = await fetch(link);
+      const blob = await response.blob();
+      const newLink = URL.createObjectURL(blob);
+      const downloadLink = document.createElement('a');
+      downloadLink.download = 'video.mp4'; 
+      downloadLink.href = newLink;
+      downloadLink.click();
+      URL.revokeObjectURL(newLink);
+    } catch (error) {
+      console.error('Error downloading video:', error);
+    }
+  };
+  
+  
   const submitForm = async (e) => {
     e.preventDefault()
     setIsLoading(true)
@@ -27,7 +43,6 @@ const App = () => {
       }
 
       const data = await response.json();
-      console.log(data)
       setVideoData(data);
       setIsLoading(false)
       if (data.links && data.links.length > 0) {
@@ -45,7 +60,11 @@ const App = () => {
   return (
     <>
     <section className="select-none flex justify-center items-center flex-col bg-neutral-900 min-h-screen text-white text-center mb-8">
+      <div>
       <img src="/animate.png" className="w-72" alt="Animation" />
+      <img src="/animate2.png" className="w-72" alt="Animation" />
+      <img src="/animate3.png" className="w-72" alt="Animation" />
+      </div>
       <div>
         <h2 className="text-2xl">Download Your Favourite YouTube Video</h2>
         <h2 className="text-1xl">for free</h2>
@@ -74,7 +93,9 @@ const App = () => {
         {videoData && (
           <div className="mt-6 mb-20 p-4 rounded-lg shadow-2xl">
             <h3 className="text-lg font-bold mb-4">Video Details</h3>
-            {videoData.thumbnail && <img src={videoData.thumbnail} alt="Video Thumbnail" className="w-full rounded-md mb-4" />}
+             {videoData.thumbnail && (
+              <img src={videoData.thumbnail} alt="Video Thumbnail" className="w-full rounded-md mb-4" />
+            )}
             <p className="text-white mb-2">
               <strong>Title:</strong> {videoData.title}
             </p>
@@ -104,17 +125,17 @@ const App = () => {
               </div>
             )}
 
-            <a
-              download
-              href={selectedUrl}
+            <button 
+              type="button"
+              onClick={() => downloadLink(selectedUrl)}
               style={{
                 pointerEvents: !selectedUrl ? 'none' : 'auto',
                 opacity: !selectedUrl ? 0.5 : 1,
               }}
-              className="block mb-32 w-full mt-4 bg-red-900 text-center text-white p-3 rounded-md hover:bg-blue-600"
+              className="cursor-pointer block mb-32 w-full mt-4 bg-red-900 text-center text-white p-3 rounded-md hover:bg-blue-600"
             >
               Download Video
-            </a>
+            </button>
           </div>
         )}
     </section>
