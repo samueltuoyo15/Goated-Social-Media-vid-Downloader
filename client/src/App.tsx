@@ -20,23 +20,24 @@ const App = () => {
 
     
     try {
-      const response = await fetch(`/download?url=${encodeURIComponent(videoURL)}`);
+      const response = await fetch(`/metadata?url=${encodeURIComponent(videoURL)}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch video data.');
       }
 
       const data = await response.json();
+      console.log(data)
       setVideoData(data);
       setIsLoading(false)
       if (data.links && data.links.length > 0) {
         setSelectedUrl(data.links[0].link);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       setError('Something went wrong. Please check the URL or try again.');
     } finally {
-      setIsDownloading(false);
+      setIsLoading(false);
     }
   };
   
@@ -73,15 +74,15 @@ const App = () => {
         {videoData && (
           <div className="mt-6 mb-20 p-4 rounded-lg shadow-2xl">
             <h3 className="text-lg font-bold mb-4">Video Details</h3>
-            {videoData.picture && <img src={videoData.picture} alt="Video Thumbnail" className="w-full rounded-md mb-4" />}
+            {videoData.thumbnail && <img src={videoData.thumbnail} alt="Video Thumbnail" className="w-full rounded-md mb-4" />}
             <p className="text-white mb-2">
               <strong>Title:</strong> {videoData.title}
             </p>
             <p className="text-white mb-2">
-              <strong>Category:</strong> {videoData.stats.category}
+              <strong>Category:</strong> {videoData.category}
             </p>
              <p className="text-white mb-2">
-              <strong>Duration:</strong> {videoData.links[0].approxDurationMs} milleseconds
+              <strong>Duration:</strong> {videoData.duration}
             </p>
 
             {videoData.links && videoData.links.length > 0 && (
