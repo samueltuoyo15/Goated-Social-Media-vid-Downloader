@@ -1,5 +1,14 @@
 import { useState } from 'react'
 import CustomSlider from "./components/CustomSlider"
+
+interface VideoMetaData {
+	title: string;
+	thumbnail: string;  
+	duration: number;      
+	category?: string;    
+	links: {link: string, quality: string}[];
+}
+
 const App = () => {
   const [videoURL, setVideoURL] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -36,7 +45,7 @@ const App = () => {
 
     
     try {
-      const response = await fetch(`/metadata?url=${encodeURIComponent(videoURL)}`);
+      const response = await fetch<VideoMetaData>(`/metadata?url=${encodeURIComponent(videoURL)}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch video data.');
@@ -123,7 +132,7 @@ const App = () => {
 
             <button 
               type="button"
-              onClick={() => downloadLink(selectedUrl)}
+              onClick={() => downloadVideo(selectedUrl)}
               style={{
                 pointerEvents: !selectedUrl ? 'none' : 'auto',
                 opacity: !selectedUrl ? 0.5 : 1,
