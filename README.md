@@ -1,161 +1,123 @@
-# Real Time Social Media Video Downloader
+# Video Metadata Fetcher
 
-A simple application to fetch metadata from video URLs using `yt-dlp`. This project consists of a React frontend and an Express.js backend.
+A simple application to fetch metadata from video URLs using `yt-dlp`. It consists of a React frontend and an Express backend.
 
 ## Description
 
-This application allows users to input a video URL and retrieve metadata such as title, thumbnail, duration, category, and available download links with their qualities. It leverages `yt-dlp` on the backend to extract the video information.
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Docker Setup](#docker-setup)
-- [Contributing](#contributing)
-- [License](#license)
+This project provides a way to retrieve video metadata, such as title, thumbnail, duration, category, and available download links, from a given video URL. The backend uses `yt-dlp` to extract the metadata, and the frontend provides a user interface to interact with the API.
 
 ## Installation
 
-Follow these steps to set up the project locally:
+### Frontend (Client)
 
-1.  **Clone the repository:**
-
-    ```bash
-    git clone <repository-url>
-    cd <project-directory>
-    ```
-
-2.  **Install server dependencies:**
-
-    ```bash
-    cd server
-    npm install
-    cd ..
-    ```
-
-3.  **Install client dependencies:**
+1.  Navigate to the `client` directory:
 
     ```bash
     cd client
+    ```
+
+2.  Install the dependencies:
+
+    ```bash
     npm install
-    cd ..
     ```
 
-4.  **Install `yt-dlp`**:
+### Backend (Server)
 
-    Make sure you have `yt-dlp` installed on your system. You can find installation instructions on the [yt-dlp GitHub page](https://github.com/yt-dlp/yt-dlp).
-
-    On macOS, you can use Homebrew:
+1.  Navigate to the `server` directory:
 
     ```bash
-    brew install yt-dlp
+    cd ../server
     ```
 
-    On Linux:
+2.  Install the dependencies:
 
     ```bash
-    sudo apt install yt-dlp
+    npm install
     ```
 
 ## Usage
 
-1.  **Start the server:**
+### Backend (Server)
+
+1.  Start the server:
 
     ```bash
     cd server
     npm run start
-    cd ..
     ```
 
-    The server will run on `http://localhost:10000` by default.
+    (or if you have a `start` script defined in `package.json`, use that.  If not, try `node index.js`)
 
-2.  **Start the client:**
+    The server will start at `http://localhost:10000` (or the port specified in your environment or `index.ts`).
+
+### Frontend (Client)
+
+1.  Start the development server:
 
     ```bash
     cd client
     npm run dev
-    cd ..
     ```
 
-    The client will typically run on `http://localhost:5173`.  Check the console output from `npm run dev` for the exact URL.
+    This will usually start the app at `http://localhost:5173/` or similar.
 
-3.  **Open the application in your browser:**
+2.  Open the application in your browser.
 
-    Navigate to the client URL (e.g., `http://localhost:5173`).
+3.  Enter the video URL in the input field and submit.
 
-4.  **Enter a video URL:**
+4.  The metadata for the video will be displayed.
 
-    Enter the URL of the video you want to fetch metadata from in the input field.
+## API Endpoint
 
-5.  **Fetch Metadata:**
+The backend exposes the following endpoint:
 
-    The application will display the video's metadata, including its title, thumbnail, duration, category, and available download links.
+-   `GET /metadata?url={videoUrl}`: Fetches the metadata for the provided video URL.
 
-## Docker Setup
+    Example: `http://localhost:10000/metadata?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
-A `Dockerfile` is not provided but you can containerize the application using Docker with a few steps. Here's a basic outline:
+## Project Structure
 
-1.  **Create a `Dockerfile` in the root directory:**
+-   `client/`: Contains the React frontend code.
+    -   `src/`: Contains the React components, styles, and application logic.
+    -   `public/`: Contains static assets like images.
+    -   `vite.config.ts`: Vite configuration file.
+    -   `tailwind.config.ts`: Tailwind CSS configuration file.
+-   `server/`: Contains the Express backend code.
+    -   `controller/`: Contains the logic for handling requests.
+        -   `downloader.ts`: Contains the function to fetch metadata using `yt-dlp`.
+    -   `routes/`: Contains the API routes.
+        -   `downloadRoute.ts`: Defines the `/metadata` route.
+    -   `index.ts`: The main server file.
+    -   `vercel.json`: Configuration file for Vercel deployment.
 
-    ```dockerfile
-    # Use a Node.js runtime as a base image
-    FROM node:18
+## Dependencies
 
-    # Set the working directory in the container
-    WORKDIR /app
+### Frontend
 
-    # Copy package.json and package-lock.json to the working directory
-    COPY package*.json ./
+-   React
+-   Vite
+-   Tailwind CSS
+-   autoprefixer
 
-    # Install server dependencies
-    RUN npm install
+### Backend
 
-    # Copy the server code to the working directory
-    COPY server ./server
+-   Express
+-   helmet
 
-    # Install client dependencies
-    COPY client/package*.json ./client/
-    WORKDIR /app/client
-    RUN npm install
-    WORKDIR /app
+## Environment Variables
 
-    # Copy the client code to the working directory
-    COPY client ./client
-
-    # Build the client
-    RUN npm run build --prefix client
-
-    # Expose the server port
-    EXPOSE 10000
-
-    # Command to start the server
-    CMD ["npm", "start", "--prefix", "server"]
-    ```
-
-2.  **Build the Docker image:**
-
-    ```bash
-    docker build -t video-metadata-fetcher .
-    ```
-
-3.  **Run the Docker container:**
-
-    ```bash
-    docker run -p 10000:10000 video-metadata-fetcher
-    ```
-
-    Now, the application should be running in a Docker container, accessible at `http://localhost:10000`.  Remember that you'll still need `yt-dlp` available inside the container.  You might want to add `RUN apt-get update && apt-get install -y yt-dlp` to your Dockerfile.
+-   `PORT`: Specifies the port for the server to listen on (default: 10000).
 
 ## Contributing
 
-Contributions are welcome!  Here's how you can contribute:
+Contributions are welcome!  If you want to contribute:
 
 1.  Fork the repository.
 2.  Create a new branch for your feature or bug fix.
-3.  Make your changes and commit them with descriptive commit messages.
-4.  Test your changes thoroughly.
-5.  Submit a pull request.
+3.  Make your changes.
+4.  Submit a pull request.
 
 ## License
 
-This project does not include a license file. As such, all rights are reserved by default.
+This project has no license.

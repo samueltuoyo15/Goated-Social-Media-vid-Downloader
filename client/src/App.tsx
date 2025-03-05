@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import CustomSlider from "./components/CustomSlider"
 const App = () => {
   const [videoURL, setVideoURL] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -60,11 +60,7 @@ const App = () => {
   return (
     <>
     <section className="select-none flex justify-center items-center flex-col bg-neutral-900 min-h-screen text-white text-center mb-8">
-      <div>
-      <img src="/animate.png" className="w-72" alt="Animation" />
-      <img src="/animate2.png" className="w-72" alt="Animation" />
-      <img src="/animate3.png" className="w-72" alt="Animation" />
-      </div>
+      <CustomSlider />
       <div>
         <h2 className="text-2xl">Download Your Favourite YouTube Video</h2>
         <h2 className="text-1xl">for free</h2>
