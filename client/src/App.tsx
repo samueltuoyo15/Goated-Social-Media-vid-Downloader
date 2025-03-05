@@ -16,7 +16,7 @@ const App = () => {
   const [videoData, setVideoData] = useState(null);
   const [selectedUrl, setSelectedUrl] = useState('');
 
-  const downloadVideo = async (link: string | undefined) => {
+  const downloadVideo = async (link: string) => {
     try {
       const response = await fetch(link);
       const blob = await response.blob();
@@ -45,7 +45,7 @@ const App = () => {
 
     
     try {
-      const response = await fetch<VideoMetaData>(`/metadata?url=${encodeURIComponent(videoURL)}`);
+      const response: VideoMetaData = await fetch(`/metadata?url=${encodeURIComponent(videoURL)}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch video data.');
