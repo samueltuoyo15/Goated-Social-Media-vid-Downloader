@@ -12,31 +12,31 @@ interface VideoMetaData {
 const App = () => {
   const [videoURL, setVideoURL] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [videoData, setVideoData] = useState(null);
-  const [selectedUrl, setSelectedUrl] = useState('');
+  const [error, setError] = useState<string | null>(null)
+  const [videoData, setVideoData] = useState<VideoMetaData>(null)
+  const [selectedUrl, setSelectedUrl] = useState('')
 
   const downloadVideo = async (link: string) => {
     try {
-      const response = await fetch(link);
-      const blob = await response.blob();
-      const newLink = URL.createObjectURL(blob);
-      const downloadLink = document.createElement('a');
-      downloadLink.download = 'video.mp4'; 
-      downloadLink.href = newLink;
-      downloadLink.click();
-      URL.revokeObjectURL(newLink);
+      const response = await fetch(link)
+      const blob = await response.blob()
+      const newLink = URL.createObjectURL(blob)
+      const downloadLink = document.createElement('a')
+      downloadLink.download = 'video.mp4'
+      downloadLink.href = newLink
+      downloadLink.click()
+      URL.revokeObjectURL(newLink)
     } catch (error) {
-      console.error('Error downloading video:', error);
+      console.error('Error downloading video:', error)
     }
-  };
+  }
   
   
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
-    setVideoData(null);
+    setVideoData(null)
     
     if (!videoURL.trim() || !/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(videoURL)) {
      setIsLoading(false)
@@ -45,25 +45,25 @@ const App = () => {
 
     
     try {
-      const response: VideoMetaData = await fetch(`/metadata?url=${encodeURIComponent(videoURL)}`);
+      const response = await fetch(`/metadata?url=${encodeURIComponent(videoURL)}`)
 
+      const data = await response.json()
       if (!response.ok) {
-        throw new Error('Failed to fetch video data.');
+        throw new Error(data.error)
+        setError(data.error)
       }
 
-      const data = await response.json();
-      setVideoData(data);
+      setVideoData(data)
       setIsLoading(false)
       if (data.links && data.links.length > 0) {
-        setSelectedUrl(data.links[0].link);
+        setSelectedUrl(data.links[0].link)
       }
-    } catch (error) {
-      console.error(error);
-      setError('Something went wrong. Please check the URL or try again.');
+    } catch (error: unknown) {
+      console.error(error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   
 
   return (
