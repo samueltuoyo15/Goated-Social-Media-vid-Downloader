@@ -12,7 +12,7 @@ func main(){
   router.Static("/static", "../client/dist")
   port := ":10000"
   
-  if err := router.Run(port) err != nil{
+  if err := router.Run(port); err != nil{
     panic(err)
   }
 }
