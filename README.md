@@ -1,8 +1,8 @@
-# Easy Download 🚀
+# Palm Download 🚀
 
 ## Description
 
-Easy Download is a modern web application that allows you to securely download your favorite social media videos for free! Built with React, TypeScript, and Tailwind CSS, this project offers a seamless and user-friendly experience for downloading videos from platforms like YouTube. Simply paste the video URL, and Easy Download fetches the video information, allowing you to select the desired quality and download it with ease. 
+Palm Download is a modern web application that allows you to securely download your favorite social media videos for free! Built with React, TypeScript, and Tailwind CSS, this project offers a seamless and user-friendly experience for downloading videos from platforms like YouTube. Simply paste the video URL, and Palm Download fetches the video information, allowing you to select the desired quality and download it with ease. 
 
 ## Key Features ✨
 
@@ -33,7 +33,7 @@ Follow these steps to set up the project locally:
 
     ```bash
     git clone <repository-url>
-    cd Easy-Download
+    cd Palm-Download
     ```
 
 2.  **Install dependencies:**
@@ -59,13 +59,13 @@ Follow these steps to set up the project locally:
 
 ### Example
 
-![Easy Download Example](https://i.imgur.com/your-image-here.png)
+![Palm Download Example](https://i.imgur.com/your-image-here.png)
 
 *Replace `https://i.imgur.com/your-image-here.png` with an actual screenshot of the application in action.*
 
 ## Contributing 🤝
 
-We welcome contributions to Easy Download! Follow these steps to contribute:
+We welcome contributions to Palm Download! Follow these steps to contribute:
 
 1.  **Fork the repository.**
 2.  **Create a new branch:**
