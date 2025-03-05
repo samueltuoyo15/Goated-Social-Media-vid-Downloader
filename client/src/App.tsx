@@ -62,7 +62,7 @@ const App = () => {
     <section className="select-none flex justify-center items-center flex-col bg-neutral-900 min-h-screen text-white text-center mb-8">
       <CustomSlider />
       <div>
-        <h2 className="text-2xl">Download Your Favourite YouTube Video</h2>
+        <h2 className="text-2xl">Securely Download Your Favourite Social Media Videos</h2>
         <h2 className="text-1xl">for free</h2>
       </div>
 
