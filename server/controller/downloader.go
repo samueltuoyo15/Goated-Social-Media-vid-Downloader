@@ -1,50 +1,63 @@
-import { Request, Response } from "express"
-import { exec } from "child_process"
+package controller
 
-interface VideoMetaData {
-	title: string;
-	thumbnail: string;  
-	duration: number;      
-	category?: string;    
-	links: {link: string, quality: string}[];
+import (
+	"encoding/json"
+	"fmt"
+	"os/exec"
+)
+
+type VideoMetaData struct {
+	Title string `json:"title"`
+	Thumbnail string `json:"thumbnail"`
+	Duration int `json:"duration"`
+	Category string `json:"category"`
+	Links []VideoQuality `json:"links"`
 }
 
-const extractMetaData = (url: string): Promise<VideoMetaData> => {
-  return new Promise((resolve, reject) => {
-    exec(`yt-dlp -j --no-playlist ${url}`, (error, stdout) => {
-      if(error) return reject(`Failed to fetch meta data ${error.message}`)
-      
-      try{
-        const metaData = JSON.parse(stdout)
-        const videoData: VideoMetaData = {
-          title: metaData.title || "No Title",
-          thumbnail: metaData.thumbnail || "",
-          duration: metaData.duration || 0,
-          category: metaData.categories?.[0] || "Uncharacterized",
-          links: metaData.formats.filter((format: any) => format.url).map((format: any) => ({
-            link: format.url,
-            quality: format.format,
-          })),
-        }
-        resolve(videoData)
-      } catch(error){
-        reject(`Error parsing Data ${error}`)
-      }
-    })
-  })
+
+type VideoQuality struct {
+	Link    string `json:"link"`
+	Quality string `json:"quality"`
 }
 
-const fetchMetaData = async (req: Request, res: Response): Promise<any> => {
-  const videourl = req.query.url as string 
-  if(!videourl) return res.status(400).json({error: "Video Url is Required"})
-  
-  try{
-    const metaData = await extractMetaData(videourl)
-    res.status(200).json(metaData)
-  } catch(error){
-    res.status(500).json({error: "Failed to get metadata"})
-    console.error(error)
-  }
-}
 
-module.exports = {fetchMetaData}
+func ExtractMetaData(url string) (*VideoMetaData, error) {
+	cmd := exec.Command("yt-dlp", "-j", "--no-playlist", url)
+	output, err := cmd.Output()
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch metadata: %v", err)
+	}
+
+	var metaData map[string]interface{}
+	if err := json.Unmarshal(output, &metaData); err != nil {
+		return nil, fmt.Errorf("error parsing data: %v", err)
+	}
+
+
+	var links []VideoQuality
+	formats := metaData["formats"].([]interface{})
+	for _, format := range formats {
+		f := format.(map[string]interface{})
+		if f["url"] != nil {
+			links = append(links, VideoQuality{
+				Link:    f["url"].(string),
+				Quality: f["format"].(string),
+			})
+		}
+	}
+
+
+	videoData := &VideoMetaData{
+		Title: metaData["title"].(string),
+		Thumbnail: metaData["thumbnail"].(string),
+		Duration: int(metaData["duration"].(float64)),
+		Category: "Uncharacterized",
+		Links: links,
+	}
+
+	if categories, ok := metaData["categories"].([]interface{}); ok && len(categories) > 0 {
+		videoData.Category = categories[0].(string)
+	}
+
+	return videoData, nil
+}
