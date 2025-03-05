@@ -13,7 +13,7 @@ const App = () => {
   const [videoURL, setVideoURL] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [videoData, setVideoData] = useState<VideoMetaData>(null)
+  const [videoData, setVideoData] = useState<VideoMetaData | null>(null)
   const [selectedUrl, setSelectedUrl] = useState('')
 
   const downloadVideo = async (link: string) => {
