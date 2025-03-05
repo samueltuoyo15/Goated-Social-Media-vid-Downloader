@@ -1,94 +1,88 @@
-# Palm Download 🚀
+# Palm Download 🌴⬇️
 
-## Description
+A modern and secure web application for effortlessly downloading your favorite videos from social media platforms. Enjoy high-quality downloads with a simple and intuitive user interface.
 
-Palm Download is a modern web application that allows you to securely download your favorite social media videos for free! Built with React, TypeScript, and Tailwind CSS, this project offers a seamless and user-friendly experience for downloading videos from platforms like YouTube. Simply paste the video URL, and Palm Download fetches the video information, allowing you to select the desired quality and download it with ease. 
+## ✨ Features
 
-## Key Features ✨
+-   **Effortless Downloads**: Easily download videos by pasting the URL.
+-   **Quality Selection**: Choose from various available video qualities to suit your needs.
+-   **Secure**: Built with security in mind to ensure a safe downloading experience.
+-   **Sleek UI**: A modern and user-friendly interface.
+-   **Free**: Completely free to use.
 
-- **Secure Video Downloading:** Safely download videos from various social media platforms.
-- **User-Friendly Interface:** A clean and intuitive design powered by Tailwind CSS.
-- **Video Quality Selection:** Choose from available video quality options before downloading.
-- **Loading State:** Provides visual feedback during video information fetching.
-- **Error Handling:** Displays informative error messages for invalid URLs or failed requests.
-- **Responsive Design:** Fully responsive layout ensuring compatibility across devices.
-- **Animated Slider:** Eye-catching image slider to enhance user experience.
+## 🛠️ Technologies Used
 
-## Technologies Used 💻
+| Category        | Technology                               | Description                                                                 |
+| :-------------- | :--------------------------------------- | :-------------------------------------------------------------------------- |
+| Frontend        | React 19.0.0                             | Building the user interface.                                                |
+| Frontend        | TypeScript                               | Ensuring type safety and improving code quality.                            |
+| Frontend        | Vite 6.2.0                               | Fast build tool and development server.                                     |
+| Frontend        | Tailwind CSS                             | Utility-first CSS framework for styling.                                     |
+| Backend         | Go                                       | Backend logic and API handling.                                             |
+| Backend         | Gin Gonic                                | Web framework for Go.                                                        |
+| Containerization| Docker                                   | For containerizing the application.                                          |
+| Other           | yt-dlp                                 | Command-line program to download videos from YouTube and other sites          |
 
-| Technology   | Description                               |
-| :----------- | :---------------------------------------- |
-| React        | JavaScript library for building user interfaces |
-| TypeScript   | Superset of JavaScript which adds static typing |
-| Vite         | Build tool that provides fast development experience |
-| Tailwind CSS | Utility-first CSS framework for styling   |
-| ESLint       | Linter for identifying and reporting on patterns found in ECMAScript/JavaScript code |
-| PostCSS      | Tool for transforming CSS with JavaScript |
+## 📦 Installation
 
-## Installation 🔧
-
-Follow these steps to set up the project locally:
+Follow these steps to get the project up and running on your local machine:
 
 1.  **Clone the repository:**
 
     ```bash
     git clone <repository-url>
-    cd Palm-Download
+    cd <repository-directory>
     ```
 
-2.  **Install dependencies:**
+2.  **Build the Docker image:**
 
     ```bash
-    npm install
+    docker build -t palm-download .
     ```
 
-3.  **Start the development server:**
+3.  **Run the Docker container:**
 
     ```bash
-    npm run dev
+    docker run -p 3000:3000 palm-download
     ```
 
-    This will start the application at `http://localhost:5173`.
+    *Note: The application will be running on port 3000.*
 
-## Usage 💡
+## 🚀 Usage
 
-1.  **Enter Video URL:** Paste the URL of the video you want to download into the input field.
-2.  **Click Download:** Press the "Download" button to fetch the video information.
-3.  **Select Quality:** Choose your desired video quality from the dropdown menu.
-4.  **Download Video:** Click the "Download Video" button to start the download.
+1.  Open your browser and navigate to `http://localhost:3000`.
+2.  Paste the URL of the video you wish to download into the input field.
+3.  Click the "Download" button.
+4.  If available, select your desired video quality from the dropdown menu.
+5.  Click the "Download Video" button to start the download.
 
-### Example
+## 🤝 Contributing
 
-![Palm Download Example](https://i.imgur.com/your-image-here.png)
-
-*Replace `https://i.imgur.com/your-image-here.png` with an actual screenshot of the application in action.*
-
-## Contributing 🤝
-
-We welcome contributions to Palm Download! Follow these steps to contribute:
+Contributions are welcome! Here's how you can contribute to the project:
 
 1.  **Fork the repository.**
-2.  **Create a new branch:**
+2.  **Create a new branch** for your feature or bug fix:
 
     ```bash
-    git checkout -b feature/your-feature
+    git checkout -b feature/your-feature-name
     ```
 
 3.  **Make your changes and commit them:**
 
     ```bash
-    git commit -m "Add your feature"
+    git add .
+    git commit -m "Add your descriptive commit message"
     ```
 
-4.  **Push to the branch:**
+4.  **Push your changes to your forked repository:**
 
     ```bash
-    git push origin feature/your-feature
+    git push origin feature/your-feature-name
     ```
 
-5.  **Submit a pull request.**
+5.  **Submit a pull request** to the main repository.
 
-## License 📝
+## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
 
