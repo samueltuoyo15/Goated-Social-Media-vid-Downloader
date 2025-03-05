@@ -1,123 +1,95 @@
-# Video Metadata Fetcher
-
-A simple application to fetch metadata from video URLs using `yt-dlp`. It consists of a React frontend and an Express backend.
+# Easy Download 🚀
 
 ## Description
 
-This project provides a way to retrieve video metadata, such as title, thumbnail, duration, category, and available download links, from a given video URL. The backend uses `yt-dlp` to extract the metadata, and the frontend provides a user interface to interact with the API.
+Easy Download is a modern web application that allows you to securely download your favorite social media videos for free! Built with React, TypeScript, and Tailwind CSS, this project offers a seamless and user-friendly experience for downloading videos from platforms like YouTube. Simply paste the video URL, and Easy Download fetches the video information, allowing you to select the desired quality and download it with ease. 
 
-## Installation
+## Key Features ✨
 
-### Frontend (Client)
+- **Secure Video Downloading:** Safely download videos from various social media platforms.
+- **User-Friendly Interface:** A clean and intuitive design powered by Tailwind CSS.
+- **Video Quality Selection:** Choose from available video quality options before downloading.
+- **Loading State:** Provides visual feedback during video information fetching.
+- **Error Handling:** Displays informative error messages for invalid URLs or failed requests.
+- **Responsive Design:** Fully responsive layout ensuring compatibility across devices.
+- **Animated Slider:** Eye-catching image slider to enhance user experience.
 
-1.  Navigate to the `client` directory:
+## Technologies Used 💻
+
+| Technology   | Description                               |
+| :----------- | :---------------------------------------- |
+| React        | JavaScript library for building user interfaces |
+| TypeScript   | Superset of JavaScript which adds static typing |
+| Vite         | Build tool that provides fast development experience |
+| Tailwind CSS | Utility-first CSS framework for styling   |
+| ESLint       | Linter for identifying and reporting on patterns found in ECMAScript/JavaScript code |
+| PostCSS      | Tool for transforming CSS with JavaScript |
+
+## Installation 🔧
+
+Follow these steps to set up the project locally:
+
+1.  **Clone the repository:**
 
     ```bash
-    cd client
+    git clone <repository-url>
+    cd Easy-Download
     ```
 
-2.  Install the dependencies:
+2.  **Install dependencies:**
 
     ```bash
     npm install
     ```
 
-### Backend (Server)
-
-1.  Navigate to the `server` directory:
+3.  **Start the development server:**
 
     ```bash
-    cd ../server
-    ```
-
-2.  Install the dependencies:
-
-    ```bash
-    npm install
-    ```
-
-## Usage
-
-### Backend (Server)
-
-1.  Start the server:
-
-    ```bash
-    cd server
-    npm run start
-    ```
-
-    (or if you have a `start` script defined in `package.json`, use that.  If not, try `node index.js`)
-
-    The server will start at `http://localhost:10000` (or the port specified in your environment or `index.ts`).
-
-### Frontend (Client)
-
-1.  Start the development server:
-
-    ```bash
-    cd client
     npm run dev
     ```
 
-    This will usually start the app at `http://localhost:5173/` or similar.
+    This will start the application at `http://localhost:5173`.
 
-2.  Open the application in your browser.
+## Usage 💡
 
-3.  Enter the video URL in the input field and submit.
+1.  **Enter Video URL:** Paste the URL of the video you want to download into the input field.
+2.  **Click Download:** Press the "Download" button to fetch the video information.
+3.  **Select Quality:** Choose your desired video quality from the dropdown menu.
+4.  **Download Video:** Click the "Download Video" button to start the download.
 
-4.  The metadata for the video will be displayed.
+### Example
 
-## API Endpoint
+![Easy Download Example](https://i.imgur.com/your-image-here.png)
 
-The backend exposes the following endpoint:
+*Replace `https://i.imgur.com/your-image-here.png` with an actual screenshot of the application in action.*
 
--   `GET /metadata?url={videoUrl}`: Fetches the metadata for the provided video URL.
+## Contributing 🤝
 
-    Example: `http://localhost:10000/metadata?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ`
+We welcome contributions to Easy Download! Follow these steps to contribute:
 
-## Project Structure
+1.  **Fork the repository.**
+2.  **Create a new branch:**
 
--   `client/`: Contains the React frontend code.
-    -   `src/`: Contains the React components, styles, and application logic.
-    -   `public/`: Contains static assets like images.
-    -   `vite.config.ts`: Vite configuration file.
-    -   `tailwind.config.ts`: Tailwind CSS configuration file.
--   `server/`: Contains the Express backend code.
-    -   `controller/`: Contains the logic for handling requests.
-        -   `downloader.ts`: Contains the function to fetch metadata using `yt-dlp`.
-    -   `routes/`: Contains the API routes.
-        -   `downloadRoute.ts`: Defines the `/metadata` route.
-    -   `index.ts`: The main server file.
-    -   `vercel.json`: Configuration file for Vercel deployment.
+    ```bash
+    git checkout -b feature/your-feature
+    ```
 
-## Dependencies
+3.  **Make your changes and commit them:**
 
-### Frontend
+    ```bash
+    git commit -m "Add your feature"
+    ```
 
--   React
--   Vite
--   Tailwind CSS
--   autoprefixer
+4.  **Push to the branch:**
 
-### Backend
+    ```bash
+    git push origin feature/your-feature
+    ```
 
--   Express
--   helmet
+5.  **Submit a pull request.**
 
-## Environment Variables
+## License 📝
 
--   `PORT`: Specifies the port for the server to listen on (default: 10000).
+This project is open source and available under the [MIT License](LICENSE).
 
-## Contributing
-
-Contributions are welcome!  If you want to contribute:
-
-1.  Fork the repository.
-2.  Create a new branch for your feature or bug fix.
-3.  Make your changes.
-4.  Submit a pull request.
-
-## License
-
-This project has no license.
+[![Built with Dokugen](https://img.shields.io/badge/Built%20with-Dokugen-brightgreen)](https://github.com/samueltuoyo15/Dokugen)
