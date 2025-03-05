@@ -3,7 +3,7 @@ package routes
 import (
   "net/http"
    "github.com/gin-gonic/gin"
-   "controller"
+   "palmdownload/controller"
   )
   
 func fetchMetaData(c *gin.Context){
