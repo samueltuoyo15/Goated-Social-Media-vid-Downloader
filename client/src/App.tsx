@@ -16,7 +16,7 @@ const App = () => {
   const [videoData, setVideoData] = useState(null);
   const [selectedUrl, setSelectedUrl] = useState('');
 
-  const downloadVideo = async (link) => {
+  const downloadVideo = async (link: string | undefined) => {
     try {
       const response = await fetch(link);
       const blob = await response.blob();
@@ -32,7 +32,7 @@ const App = () => {
   };
   
   
-  const submitForm = async (e) => {
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
