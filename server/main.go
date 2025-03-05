@@ -13,6 +13,6 @@ func main(){
   port := ":10000"
   
   if err := router.Run(port) err != nil{
-    panic(error)
+    panic(err)
   }
 }
