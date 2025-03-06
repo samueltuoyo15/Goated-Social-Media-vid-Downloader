@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import CustomSlider from "./components/CustomSlider"
+import CustomSlider from "./Components/CustomSlider"
 
 interface VideoMetaData {
 	title: string;

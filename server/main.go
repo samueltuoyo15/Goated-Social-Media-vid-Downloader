@@ -1,23 +1,29 @@
 package main
 
-import(
-  "github.com/gin-gonic/gin"
-  "path/filepath"
-  )
+import (
+	"github.com/gin-gonic/gin"
+	"path/filepath"
+	"palmdownload/routes"
+	"os"
+)
 
-func main(){
-  router := gin.Default()
-  
-    distPath := filepath.Join("..", "client", "dist") 
-    router.Static("/static", distPath) 
+func main() {
+	router := gin.Default()
 
-    router.NoRoute(func(c *gin.Context) {
-        c.File(filepath.Join(distPath, "index.html")) 
-    })
-  
-  router.SetTrustedProxies([]string{"127.0.0.1"})
-  if err := router.Run(":10000"); err != nil{
-    panic(err)
-  }
+	routes.SetupRoutes(router)
+
+	rootDir, _ := os.Getwd()
+	distPath := filepath.Join(rootDir, "../client/dist")
+
+	router.StaticFS("/", gin.Dir(distPath, false))
+
+	router.NoRoute(func(c *gin.Context) {
+		c.File(filepath.Join(distPath, "index.html"))
+	})
+
+	router.SetTrustedProxies(nil)
+
+	if err := router.Run(":10000"); err != nil {
+		panic(err)
+	}
 }
-
