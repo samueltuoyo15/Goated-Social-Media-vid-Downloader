@@ -15,10 +15,20 @@ func main() {
 	rootDir, _ := os.Getwd()
 	distPath := filepath.Join(rootDir, "../client/dist")
 
-	router.StaticFS("/", gin.Dir(distPath, false))
+  router.Use(func(c *gin.Context) {
 
-	router.NoRoute(func(c *gin.Context) {
-		c.File(filepath.Join(distPath, "index.html"))
+		if c.Request.URL.Path == "/metadata" {
+
+			c.Next()
+			return
+		}
+
+		filePath := filepath.Join(distPath, c.Request.URL.Path)
+		if _, err := os.Stat(filePath); err == nil {
+			c.File(filePath)
+		} else {
+			c.File(filepath.Join(distPath, "index.html"))
+		}
 	})
 
 	router.SetTrustedProxies(nil)
