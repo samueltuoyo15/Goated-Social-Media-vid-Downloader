@@ -13,7 +13,7 @@ func main() {
 	routes.SetupRoutes(router)
 
 	rootDir, _ := os.Getwd()
-	distPath := filepath.Join(rootDir, "dist")
+	distPath := filepath.Join(rootDir, "client/dist")
 
   router.Use(func(c *gin.Context) {
 
