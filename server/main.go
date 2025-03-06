@@ -2,7 +2,7 @@ package main
 
 import(
   "github.com/gin-gonic/gin"
-  "palmdownload/routes"
+  "path/filepath"
   )
 
 func main(){
