@@ -9,7 +9,7 @@ RUN npm run build
 
 
 
-FROM golang:1.23.4-alpine AS server-builder
+FROM golang:1.23.5-alpine AS server-builder
 
 WORKDIR /server
 COPY server/go.mod server/go.sum ./
