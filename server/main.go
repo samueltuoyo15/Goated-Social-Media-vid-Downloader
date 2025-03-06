@@ -8,11 +8,16 @@ import(
 func main(){
   router := gin.Default()
   
-  routes.SetupRoutes(router)
-  router.Static("/static", "../client/dist")
-  port := ":10000"
+    distPath := filepath.Join("..", "client", "dist") 
+    router.Static("/static", filepath.Join(distPath, "static")) 
+
+    router.NoRoute(func(c *gin.Context) {
+        c.File(filepath.Join(distPath, "index.html")) 
+    })
   
-  if err := router.Run(port); err != nil{
+  router.SetTrustedProxies([]string{"127.0.0.1"})
+  if err := router.Run(":10000"); err != nil{
     panic(err)
   }
 }
+
