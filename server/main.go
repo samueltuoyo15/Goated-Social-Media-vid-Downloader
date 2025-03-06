@@ -9,7 +9,7 @@ func main(){
   router := gin.Default()
   
     distPath := filepath.Join("..", "client", "dist") 
-    router.Static("/static", filepath.Join(distPath, "static")) 
+    router.Static("/static", distPath, "static") 
 
     router.NoRoute(func(c *gin.Context) {
         c.File(filepath.Join(distPath, "index.html")) 
