@@ -4,11 +4,11 @@ const images = ["/animate.png", "/animate2.png", "/animate3.png", "/animate4.png
 
 function CustomSlider() {
   const [index, setIndex] = useState(0)
-
+   
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }, 2000); 
+      setIndex((prevIndex) => (prevIndex === images.length -1 ? -1  : prevIndex +1))
+    }, 2000)
 
     return () => clearInterval(interval)
   }, [])
@@ -28,3 +28,5 @@ function CustomSlider() {
 }
 
 export default CustomSlider
+
+

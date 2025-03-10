@@ -38,7 +38,7 @@ const App = () => {
     setError(null)
     setVideoData(null)
     
-    if (!videoURL.trim() || !/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(videoURL)) {
+    if (!videoURL.trim() || !/^https?:\/\//.test(videoURL)) {
      setIsLoading(false)
      return
     }
@@ -56,7 +56,7 @@ const App = () => {
       setVideoData(data)
       setIsLoading(false)
       if (data.links && data.links.length > 0) {
-        setSelectedUrl(data.links[0].link)
+        setSelectedUrl(data.links[0].link || "")
       }
     } catch (error: unknown) {
       console.error(error)
