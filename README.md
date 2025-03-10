@@ -1,85 +1,122 @@
-# Palm Download: Securely Download Social Media Videos 🌴
+# EverDownload: Secure Social Media Video Downloader 🚀
 
-Tired of losing your favorite social media videos to the ever-changing internet landscape? Palm Download is here to help! This project provides a simple and secure way to download videos from platforms like YouTube, ensuring you can enjoy your favorite content offline, anytime, anywhere.
+## Description
 
-## ✨ Key Features
+EverDownload is a modern web application that allows you to securely download your favorite social media videos. It provides a simple and intuitive interface for fetching video metadata and downloading videos in various qualities. Built with React, TypeScript, Go, and Docker, EverDownload offers a seamless experience for users looking to save online videos for offline viewing.
 
--   **Simple URL Input**: Just paste the video URL, and let Palm Download do the rest.
--   **Quality Selection**: Choose the video quality that suits your needs.
--   **Secure Downloads**: Downloads are direct and secure, ensuring your privacy.
--   **Modern UI**: A clean and intuitive interface built with React and Tailwind CSS.
--   **Cross-Platform**: Works seamlessly across different operating systems thanks to Docker.
+## Features
 
-## 🛠️ Technologies Used
+- **Secure Downloads**: Safely download videos without compromising your privacy.
+- **Multi-Quality Support**: Choose from various video qualities to suit your needs.
+- **User-Friendly Interface**: A clean and intuitive design for a seamless user experience.
+- **Real-time Metadata Fetching**: Quickly retrieve video details like title, duration, and thumbnail.
+- **Cross-Platform Compatibility**: Works on any device with a modern web browser.
 
-| Category    | Technology          | Description                                                              |
-| :---------- | :------------------ | :----------------------------------------------------------------------- |
-| Frontend    | React               | A JavaScript library for building user interfaces.                      |
-|             | TypeScript          | Adds static typing to JavaScript for improved code quality.            |
-|             | Tailwind CSS        | A utility-first CSS framework for rapid UI development.                |
-|             | Vite                | A fast build tool for modern web development.                            |
-| Backend     | Go                  | A fast and efficient programming language for backend logic.             |
-|             | Gin Gonic           | A high-performance HTTP web framework for Go.                           |
-| Other       | Docker              | A platform for developing, shipping, and running applications in containers. |
-|             | yt-dlp              | A command-line program to download videos from YouTube and other sites. |
+## Technologies Used
 
-## 📦 Installation
+| Category | Technology   | Description                               |
+| :------- | :----------- | :---------------------------------------- |
+| Frontend | React        | JavaScript library for building user interfaces |
+|          | TypeScript   | Adds static typing to JavaScript           |
+|          | Tailwind CSS | CSS framework for styling                 |
+|          | Vite         | Build tool for modern web development      |
+| Backend  | Go           | Programming language for server-side logic |
+| Other    | Docker       | Platform for containerization             |
 
-Follow these steps to get Palm Download up and running on your local machine:
+## Installation
 
-1.  **Clone the repository:**
+Follow these steps to set up EverDownload locally using Docker:
+
+1.  **Clone the Repository**:
 
     ```bash
     git clone <repository-url>
-    cd <repository-directory>
+    cd EverDownload
     ```
 
-2.  **Build the Docker image:**
+2.  **Build the Docker Image**:
 
     ```bash
-    docker build -t palm-download .
+    docker build -t everdownload .
     ```
 
-3.  **Run the Docker container:**
+3.  **Run the Docker Container**:
 
     ```bash
-    docker run -p 10000:10000 palm-download
+    docker run -p 10000:10000 everdownload
     ```
 
-4.  **Access the application:**
+## Usage
+
+1.  **Open the Application**:
 
     Open your web browser and navigate to `http://localhost:10000`.
 
-## 🚀 Usage
+2.  **Paste the Video URL**:
 
-1.  **Enter the Video URL:** Paste the URL of the video you want to download into the input field.
-2.  **Click "Download":** Submit the form. The application will fetch the video metadata.
-3.  **Select Quality:** Choose your desired video quality from the dropdown menu.
-4.  **Download Video:** Click the "Download Video" button to start the download.
+    Enter the URL of the social media video you want to download into the input field.
 
-Here's a quick example:
+    ![Input Field](https://i.imgur.com/your-input-field-screenshot.png)
 
-![Palm Download Interface](https://i.imgur.com/placeholder.png)
+3.  **Click the "Download" Button**:
 
-*Replace the above image URL with an actual screenshot of the application interface.*
+    Click the "Download" button to fetch the video metadata.
 
-## 🤝 Contributing
+4.  **Select the Desired Quality**:
 
-We welcome contributions to Palm Download! Here's how you can help:
+    Choose the video quality from the dropdown menu.
 
-1.  **Fork the repository.**
-2.  **Create a new branch** for your feature or bug fix:
+    ![Quality Selection](https://i.imgur.com/your-quality-selection-screenshot.png)
+
+5.  **Download the Video**:
+
+    Click the "Download Video" button to start the download.
+
+## Contributing
+
+We welcome contributions from the community! Here's how you can contribute:
+
+1.  **Fork the Repository**:
+
+    Fork the repository on GitHub.
+
+2.  **Set Up Your Development Environment**:
+
+    *   Install Go: [https://go.dev/doc/install](https://go.dev/doc/install)
+    *   Install Node.js and npm: [https://nodejs.org/](https://nodejs.org/)
+
+3.  **Make Changes**:
+
+    Create a new branch for your feature or bug fix.
 
     ```bash
-    git checkout -b feature/your-feature-name
+    git checkout -b feature/your-feature
     ```
 
-3.  **Make your changes** and commit them with clear, concise messages.
-4.  **Push your branch** to your forked repository.
-5.  **Submit a pull request** to the main repository.
+4.  **Test Your Changes**:
 
-## 📜 License
+    *   Run the client tests: `cd client && npm install && npm run lint`
+    *   Run the server: `cd server && go run main.go`
 
-This project is licensed under the [MIT License](LICENSE) (if applicable).
+5.  **Commit Your Changes**:
+
+    ```bash
+    git add .
+    git commit -m "Add: your feature or fix"
+    ```
+
+6.  **Push to Your Fork**:
+
+    ```bash
+    git push origin feature/your-feature
+    ```
+
+7.  **Submit a Pull Request**:
+
+    Submit a pull request to the main repository.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
 
 [![Built with Dokugen](https://img.shields.io/badge/Built%20with-Dokugen-brightgreen)](https://github.com/samueltuoyo15/Dokugen)

@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"path/filepath"
-	"palmdownload/routes"
+	"EverDownload/routes"
 	"os"
 )
 

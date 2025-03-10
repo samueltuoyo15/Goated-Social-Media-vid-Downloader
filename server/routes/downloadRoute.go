@@ -2,7 +2,7 @@ package routes
 
 import (
    "github.com/gin-gonic/gin"
-   "palmdownload/controller"
+   "EverDownload/controller"
   )
   
 func fetchMetaData(c *gin.Context){
