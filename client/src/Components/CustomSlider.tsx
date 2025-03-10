@@ -7,7 +7,7 @@ function CustomSlider() {
    
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex === images.length -1 ? -1  : prevIndex +1))
+      setIndex((prevIndex) => (prevIndex +1) % images.length)
     }, 2000)
 
     return () => clearInterval(interval)
@@ -18,8 +18,8 @@ function CustomSlider() {
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${index * 100}%)` }}
-      >
-        {images.map((src, i) => (
+      >    
+      {images.concat(images[0]).map((src, i) => ( 
           <img key={i} src={src} className="w-72 flex-shrink-0" alt="Slide" />
         ))}
       </div>

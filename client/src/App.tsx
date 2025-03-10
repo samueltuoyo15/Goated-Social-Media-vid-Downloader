@@ -49,8 +49,8 @@ const App = () => {
 
       const data = await response.json()
       if (!response.ok) {
-        throw new Error(data.error)
         setError(data.error)
+        return 
       }
 
       setVideoData(data)
