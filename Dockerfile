@@ -22,10 +22,11 @@ FROM alpine:latest
 
 WORKDIR /app
 
-RUN apk add --no-cache python3 py3-pip libwebp libwebp-dev build-base ca-certificates
+RUN apk add --no-cache python3 py3-pip libwebp libwebp-dev build-base ca-certificates ffmpeg
 
 RUN python3 -m venv /opt/venv
-RUN /opt/venv/bin/pip install --no-cache-dir yt-dlp
+RUN /opt/venv/bin/pip install --no-cache-dir -U yt-dlp
+
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY --from=client-builder /client/dist /app/client/dist
