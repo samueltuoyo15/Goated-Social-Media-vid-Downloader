@@ -3,6 +3,7 @@ package routes
 import (
 	"EverDownload/controller"
 	"github.com/gin-gonic/gin"
+	"net/url"
 )
 
 func SetupRoutes(router *gin.Engine) {
