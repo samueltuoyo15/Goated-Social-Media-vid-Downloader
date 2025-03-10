@@ -144,7 +144,7 @@ const App = () => {
           </div>
         )}
     </section>
-   <footer className="fixed p-4 text-center bg-neutral-900 text-white text-center bottom-0 w-full">Contribute https://GitHub.com/samueltuoyo15/EverDownload</footer>
+   <footer className="fixed p-4 text-center bg-neutral-900 text-white text-center bottom-0 w-full">Developed by Samuel Tuoyo with ❤️</footer>
    </>
   )
 }
