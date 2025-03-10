@@ -68,7 +68,7 @@ const App = () => {
 
   return (
     <>
-    <section className="select-none flex justify-center items-center flex-col bg-neutral-900 min-h-screen text-white text-center mb-8">
+    <section onContextMenu={(e) => e.preventDefault()}className="select-none flex justify-center items-center flex-col bg-neutral-900 min-h-screen text-white text-center mb-8">
       <CustomSlider />
       <div>
         <h2 className="text-2xl">Securely Download Your Favourite Social Media Videos</h2>
