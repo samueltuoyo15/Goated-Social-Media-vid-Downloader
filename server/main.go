@@ -1,24 +1,30 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"path/filepath"
 	"EverDownload/routes"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"os"
+	"path/filepath"
 )
 
 func main() {
 	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
+		AllowCredentials: true,
+	}))
 
 	routes.SetupRoutes(router)
 
 	rootDir, _ := os.Getwd()
 	distPath := filepath.Join(rootDir, "client/dist")
 
-  router.Use(func(c *gin.Context) {
-
-		if c.Request.URL.Path == "/metadata" {
-
+	router.Use(func(c *gin.Context) {
+		if c.Request.URL.Path == "/metadata" || c.Request.URL.Path == "/proxy" {
 			c.Next()
 			return
 		}
