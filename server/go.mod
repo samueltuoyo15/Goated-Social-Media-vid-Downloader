@@ -1,4 +1,4 @@
-module palmdownload
+module EverDownload
 
 go 1.23.5
 

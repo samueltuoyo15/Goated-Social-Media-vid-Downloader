@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 
-const images = ["/animate.png", "/animate2.png", "/animate3.png"];
+const images = ["/animate.png", "/animate2.png", "/animate3.png", "/animate4.png", "/animate5.png"]
 
 function CustomSlider() {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setIndex((prevIndex) => (prevIndex + 1) % images.length)
     }, 2000); 
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="relative w-72 h-72 overflow-hidden">
@@ -24,7 +24,7 @@ function CustomSlider() {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 export default CustomSlider
