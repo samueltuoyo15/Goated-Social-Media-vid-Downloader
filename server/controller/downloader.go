@@ -11,11 +11,11 @@ import (
 )
 
 type VideoMetaData struct {
-	Title     string         `json:"title"`
-	Thumbnail string         `json:"thumbnail"`
-	Duration  int            `json:"duration"`
-	Category  string         `json:"category"`
-	Links     []VideoQuality `json:"links"`
+	Title string `json:"title"`
+	Thumbnail string `json:"thumbnail"`
+	Duration int `json:"duration"`
+	Category string `json:"category"`
+	Links []VideoQuality `json:"links"`
 }
 
 

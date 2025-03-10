@@ -44,9 +44,14 @@ const App = () => {
     if (!videoURL.trim() || !/^https?:\/\//.test(videoURL)) {
       setIsLoading(false);
       setError("Please enter a valid video URL.")
-      return;
+      return
     }
-
+    
+    if (videoURL.includes("x.com/") || videoURL.includes("twitter.com/")) {
+    setIsLoading(false)
+    setError("X (Twitter) downloads are currently under development.")
+    return
+  }
     try {
       const response = await fetch(`/metadata?url=${encodeURIComponent(videoURL)}`)
       const data = await response.json()
