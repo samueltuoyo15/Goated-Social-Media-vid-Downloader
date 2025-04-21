@@ -63,8 +63,7 @@ Get EverDownload up and running in a few simple steps:
 | HTML                                     | [https://developer.mozilla.org/en-US/docs/Web/HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) |
 | Tailwind CSS                             | [https://tailwindcss.com/](https://tailwindcss.com/)         |
 | Alpine.js                                | [https://alpinejs.dev/](https://alpinejs.dev/)               |
-| HTMX                                     | [https://htmx.org/](https://htmx.org/)                       |
-| RapidAPI                                 | [https://rapidapi.com/](https://rapidapi.com/)               |
+| HTMX                                     | [https://htmx.org/](https://htmx.org/)                       |              |
 | `github.com/joho/godotenv`             | [https://github.com/joho/godotenv](https://github.com/joho/godotenv) |
 
 ## 🙌 Contributing
