@@ -26,9 +26,13 @@ type VideoResponse struct {
 	Medias []struct {
 		URL string `json:"url"`
 		Quality string `json:"quality"`
+		Width int `json:"width"`
+		Height int `json:"height"`
+		Ext string  `json"ext"`
 	} `json:"medias"`
 	Error bool `json:"error"`
 }
+
 
 func main() {
   err := godotenv.Load()
@@ -36,9 +40,9 @@ func main() {
     log.Fatal("Error loading .env file")
   }
   
-	rapidApiKey := os.Getenv("RAPID_API_KEY")
-	if rapidApiKey == "" {
-		log.Fatal("RAPID_API_KEY environment variable not set")
+	secretKey := os.Getenv("SECRET_KEY")
+	if secretKey == "" {
+		log.Fatal("SECRET_KEY environment variable not set")
 	}
 
 	fs := http.FileServer(http.Dir("client"))
@@ -56,7 +60,7 @@ func main() {
 			return
 		}
 
-		videoData, err := fetchVideoMetaData(videoURL, rapidApiKey)
+		videoData, err := fetchVideoMetaData(videoURL, secretKey)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error fetching video meta data: %v", err), http.StatusInternalServerError)
 			return
@@ -134,6 +138,7 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 		<h3 class="text-lg font-bold mb-4">Video Details</h3>
 		<img src="%s" alt="Video Thumbnail" class="w-full rounded-md mb-4" />
 		<p class="text-white mb-2"><strong>Title:</strong> %s</p>
+		<p class="text-white mb-2"><strongSource:</strong> %s</p>
 		<p class="text-white mb-2"><strong>Author:</strong> %s</p>
 		<p class="text-white mb-2"><strong>Duration:</strong> %d seconds</p>
 		<div class="mt-4">
@@ -142,12 +147,17 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 		data.Medias[0].URL,
 		data.Thumbnail,
 		data.Title,
+		data.Source,
 		data.Author,
-		data.Duration/1000,
+		data.Duration,
 	)
 
-	for i, media := range data.Medias {
-		fmt.Fprintf(w, `<option value="%s">Quality %d</option>`, media.URL, i+1)
+	for _, media := range data.Medias {
+	  qualityLabel := media.Quality
+	  if qualityLabel == ""{
+	    qualityLabel = fmt.Sprintf("%dx%d %s", media.Width, media.Height, media.Ext) 
+	  }
+		fmt.Fprintf(w, `<option value="%s">%d</option>`, media.URL, qualityLabel)
 	}
 
 	fmt.Fprint(w, `
