@@ -1,13 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="src/assets/react.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ever Download</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Downloader</title>
+  <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+  <script src="https://unpkg.com/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+.htmx-indicator {
+  display: none;
+  pointer-events: none; 
+}
+.htmx-request .htmx-indicator {
+  display: block;
+  pointer-events: all;  
+}
+.htmx-request.htmx-indicator {
+  display: block;
+  pointer-events: all;
+}
+  </style>
+</head>
+<body class="bg-neutral-900 text-white min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <section class="flex justify-center items-center flex-col min-h-screen text-center mb-8">
+
+      <div>
+        <h2 class="text-2xl">Securely Download Your Favourite Social Media Videos</h2>
+        <h2 class="text-1xl">for free</h2>
+      </div>
+
+      <form 
+        hx-post="/submit" 
+        hx-target="#result-container"
+        hx-swap="innerHTML"
+        class="flex justify-center items-center mt-10"
+      >
+        <input
+          name="videoURL"
+          type="url"
+          placeholder="Paste your URL here..."
+          required
+          class="w-52 text-black rounded p-3"
+        />
+        <button type="submit" class="bg-neutral-800 text-white rounded ml-3 p-3">
+          Download
+        </button>
+      </form>
+
+      <div id="loading-indicator" class="htmx-indicator absolute inset-0 flex flex-col justify-center items-center bg-neutral-900 bg-opacity-70">
+        <img src="./public/spinning-dots.svg" alt="Loading..." class="w-72" />
+        <p class="block text-lg">Fetching Video Info...</p>
+      </div>
+
+
+      <div id="result-container" class="mt-6"></div>
+    </section>
+
+    <footer class="fixed p-4 text-center bg-neutral-900 text-white text-center bottom-0 w-full">
+      Developed by Samuel Tuoyo with ❤️
+    </footer>
+  </div>
+</body>
 </html>
