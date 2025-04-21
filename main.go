@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 	"github.com/joho/godotenv"
-)
+) 
 
 type VideoRequest struct {
 	URL string `json:"url"`
@@ -35,11 +35,13 @@ type VideoResponse struct {
 
 
 func main() {
-  err := godotenv.Load()
-  if err != nil {
-    log.Fatal("Error loading .env file")
-  }
-  
+ if os.Getenv("RAILWAY_ENVIRONMENT") == "" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Println("No .env file found.")
+		}
+	}
+
 	secretKey := os.Getenv("SECRET_KEY")
 	if secretKey == "" {
 		log.Fatal("SECRET_KEY environment variable not set")
