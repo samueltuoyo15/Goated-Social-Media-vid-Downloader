@@ -10,6 +10,9 @@ import (
 	"os"
 	"strings"
 	"github.com/joho/godotenv"
+	"context"
+	"time"
+	"github.com/redis/go-redis/v9"
 ) 
 
 type VideoRequest struct {
@@ -35,6 +38,9 @@ type VideoResponse struct {
 }
 
 
+var ctx = context.Background()
+var rdb *redis.Client
+
 func main() {
  if os.Getenv("RAILWAY_ENVIRONMENT") == "" {
 		err := godotenv.Load()
@@ -48,10 +54,17 @@ func main() {
 		log.Fatal("SECRET_KEY environment variable not set")
 	}
 
+  rdb = redis.NewClient(&redis.Options{
+	  Addr: os.Getenv("REDIS_URL"),
+  	Password: os.Getenv("REDIS_PASSWORD"),             
+  	DB: 0,           
+})
+
+
 	fs := http.FileServer(http.Dir("client"))
 	http.Handle("/", fs)
 
-	http.HandleFunc("/submit", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/submit", rateLimit(func(w http.ResponseWriter, r *http.Request) {
 		if err := r.ParseForm(); err != nil {
 			http.Error(w, "Error Parsing Form", http.StatusBadRequest)
 			return
@@ -71,16 +84,38 @@ func main() {
 
 		w.Header().Set("Content-Type", "text/html")
 		renderVideoData(w, videoData)
-	})
+	}))
 
-	http.HandleFunc("/download", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/download", rateLimit(func(w http.ResponseWriter, r *http.Request) {
 		url := r.URL.Query().Get("url")
 		if url == "" {
 			http.Error(w, "URL parameter is required", http.StatusBadRequest)
 			return
 		}
-		http.Redirect(w, r, url, http.StatusFound)
-	})
+		
+		
+		fileName := r.URL.Query().Get("filename")
+		if fileName == ""{
+		  fileName = "video.mp4"
+		}
+		
+		resp, err := http.Get(url)
+		if err != nil{
+		  http.Error(w, "Failed to fetch video", http.StatusInternalServerError)
+		  return 
+		}
+		
+		defer resp.Body.Close()
+		
+   w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, fileName))
+   w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
+   w.Header().Set("Content-Length", resp.Header.Get("Content-Length"))
+   
+   _, err = io.Copy(w, resp.Body)
+   if err != nil {
+     log.Printf("Error Streaming Video %v", err)
+   }
+	}))
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -144,7 +179,7 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 		<p class="text-white mb-2"><strong>Title:</strong> %s</p>
 		<p class="text-white mb-2"><strong>Source:</strong> %s</p>
 		<p class="text-white mb-2"><strong>Author:</strong> %s</p>
-		<p class="text-white mb-2"><strong>Duration:</strong> %d seconds</p>
+		<p class="text-white mb-2"><strong>Duration:</strong></p>
 		<div class="mt-4">
 			<label for="qualitySelect" class="block mb-2">Select Quality</label>
 			<select id="qualitySelect" x-model="selectedUrl" class="w-full p-2 bg-neutral-800 text-white rounded-md border">`,
@@ -167,20 +202,51 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 	fmt.Fprint(w, `
 			</select>
 		</div>
-   <button @click="fetch(selectedUrl)
-	.then(res => res.blob())
-	.then(blob => {
-		const url = URL.createObjectURL(blob)
-		const a = document.createElement('a')
-		a.href = url
-		a.download = '%s.mp4'
-  	a.click()
-		URL.revokeObjectURL(url)
-	})"
-	class="cursor-pointer block mb-32 w-full mt-4 bg-red-900 text-center text-white p-3 rounded-md hover:bg-blue-600">
-	Download Video
-</button>
+  <a 
+  x-bind:href="'/download?url=' + encodeURIComponent(selectedUrl) + '&filename=%s.mp4'" 
+  class="block mb-32 w-full mt-4 bg-red-900 text-center text-white p-3 rounded-md hover:bg-blue-600"
+  download
+   >
+    Download Video
+   </a>
 	</div>`, sanitizedTitle)
 }
 
 
+func rateLimit(next http.HandlerFunc) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        
+        ip := r.RemoteAddr
+        if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
+            ip = strings.Split(forwarded, ",")[0]
+        } else {
+            ip = strings.Split(ip, ":")[0] 
+        }
+
+        key := fmt.Sprintf("rate_limit:%s:%s", ip, time.Now().Format("2006-01-02"))
+        
+        count, err := rdb.Incr(ctx, key).Result()
+        if err != nil {
+            log.Printf("Redis error: %v", err)
+            http.Error(w, "Internal server error", http.StatusInternalServerError)
+            return
+        }
+
+        if count == 1 {
+            _, err := rdb.Expire(ctx, key, 24*time.Hour).Result()
+            if err != nil {
+                log.Printf("Redis expiration error: %v", err)
+            }
+        }
+       
+       w.Header().Set("X-RateLimit-Limit", "4")
+       w.Header().Set("X-RateLimit-Remaining", fmt.Sprintf("%d", 4-count))
+   
+        if count > 4 {
+            http.Error(w, "Rate limit exceeded (4 requests/day)", http.StatusTooManyRequests)
+            return
+        }
+
+        next(w, r)
+    }
+}
