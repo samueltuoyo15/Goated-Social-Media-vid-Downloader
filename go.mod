@@ -1,4 +1,4 @@
-module videodownloader
+module EverDownload
 
 go 1.24.1
 

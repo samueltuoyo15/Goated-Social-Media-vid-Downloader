@@ -1,122 +1,93 @@
-# EverDownload: Secure Social Media Video Downloader 🚀
+# ⚡️ EverDownload: Your Ultimate Social Media Downloader ⚡️
 
-## Description
+EverDownload is a blazing-fast Go-powered web application that lets you download videos and audio from your favorite social media platforms like YouTube, Instagram, Twitter, Facebook, and more! 🚀 It's completely free, secure, and easy to use.
 
-EverDownload is a modern web application that allows you to securely download your favorite social media videos. It provides a simple and intuitive interface for fetching video metadata and downloading videos in various qualities. Built with React, TypeScript, Go, and Docker, EverDownload offers a seamless experience for users looking to save online videos for offline viewing.
+## 🛠️ Installation
 
-## Features
-
-- **Secure Downloads**: Safely download videos without compromising your privacy.
-- **Multi-Quality Support**: Choose from various video qualities to suit your needs.
-- **User-Friendly Interface**: A clean and intuitive design for a seamless user experience.
-- **Real-time Metadata Fetching**: Quickly retrieve video details like title, duration, and thumbnail.
-- **Cross-Platform Compatibility**: Works on any device with a modern web browser.
-
-## Technologies Used
-
-| Category | Technology   | Description                               |
-| :------- | :----------- | :---------------------------------------- |
-| Frontend | React        | JavaScript library for building user interfaces |
-|          | TypeScript   | Adds static typing to JavaScript           |
-|          | Tailwind CSS | CSS framework for styling                 |
-|          | Vite         | Build tool for modern web development      |
-| Backend  | Go           | Programming language for server-side logic |
-| Other    | Docker       | Platform for containerization             |
-
-## Installation
-
-Follow these steps to set up EverDownload locally using Docker:
+Get EverDownload up and running in a few simple steps:
 
 1.  **Clone the Repository**:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/samueltuoyo15/EverDownload.git
     cd EverDownload
     ```
 
-2.  **Build the Docker Image**:
+2.  **Set up Environment Variables**:
+
+    *   Create a `.env` file in the root directory.
+        ```
+        SECRET_KEY=YOUR_SECRET_KEY
+        PORT=3000 # Optional: Change the port if needed
+        ```
+
+3.  **Run the Application**:
 
     ```bash
-    docker build -t everdownload .
+    go run main.go
     ```
 
-3.  **Run the Docker Container**:
+    The server will start, and you can access the application in your browser at `http://localhost:3000`.
 
-    ```bash
-    docker run -p 10000:10000 everdownload
-    ```
-
-## Usage
+## 💻 Usage
 
 1.  **Open the Application**:
 
-    Open your web browser and navigate to `http://localhost:10000`.
+    Navigate to `http://localhost:3000` in your web browser.
 
 2.  **Paste the Video URL**:
 
-    Enter the URL of the social media video you want to download into the input field.
+    Enter the URL of the video you want to download into the input field.
 
-    ![Input Field](https://i.imgur.com/your-input-field-screenshot.png)
+3.  **Click Download**:
 
-3.  **Click the "Download" Button**:
+    Click the "Download" button.  The application will fetch the video metadata and display available download options.
 
-    Click the "Download" button to fetch the video metadata.
+4.  **Select Quality and Download**:
 
-4.  **Select the Desired Quality**:
+    Choose your preferred video quality from the dropdown menu and click the "Download Video" button to start the download.
 
-    Choose the video quality from the dropdown menu.
+## ✨ Features
 
-    ![Quality Selection](https://i.imgur.com/your-quality-selection-screenshot.png)
+*   ⬇️ **Multi-Platform Support**: Download videos from YouTube, Instagram, Facebook, Twitter, and more.
+*   🚀 **Blazing Fast**: Built with Go for optimal performance and speed.
+*   🔒 **Secure**: Utilizes secure API requests for fetching video metadata.
+*   📱 **Responsive Design**:  Works seamlessly on desktops, tablets, and mobile devices.
+*   🎨 **Modern UI**:  Clean and intuitive user interface using Tailwind CSS and Alpine.js.
 
-5.  **Download the Video**:
+## ⚙️ Technologies Used
 
-    Click the "Download Video" button to start the download.
+| Technology                               | Link                                                         |
+| :--------------------------------------- | :----------------------------------------------------------- |
+| Go                                       | [https://go.dev/](https://go.dev/)                           |
+| HTML                                     | [https://developer.mozilla.org/en-US/docs/Web/HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) |
+| Tailwind CSS                             | [https://tailwindcss.com/](https://tailwindcss.com/)         |
+| Alpine.js                                | [https://alpinejs.dev/](https://alpinejs.dev/)               |
+| HTMX                                     | [https://htmx.org/](https://htmx.org/)                       |
+| RapidAPI                                 | [https://rapidapi.com/](https://rapidapi.com/)               |
+| `github.com/joho/godotenv`             | [https://github.com/joho/godotenv](https://github.com/joho/godotenv) |
 
-## Contributing
+## 🙌 Contributing
 
-We welcome contributions from the community! Here's how you can contribute:
+Contributions are always welcome! Here’s how you can contribute to EverDownload:
 
-1.  **Fork the Repository**:
+*   🐛 **Report Bugs**: Submit detailed bug reports.
+*   💡 **Suggest Features**: Propose new features and improvements.
+*   💻 **Submit Pull Requests**: Contribute code changes to fix bugs or add new features.
 
-    Fork the repository on GitHub.
+## 📝 License
 
-2.  **Set Up Your Development Environment**:
+This project is licensed under the [MIT License](LICENSE).
 
-    *   Install Go: [https://go.dev/doc/install](https://go.dev/doc/install)
-    *   Install Node.js and npm: [https://nodejs.org/](https://nodejs.org/)
+## 👨‍💻 Author Info
 
-3.  **Make Changes**:
+*   **Samuel Tuoyo**
+    *   GitHub: [https://github.com/samueltuoyo15](https://github.com/samueltuoyo15)
+    *   Twitter: [](https://twitter.com/codeWithRoy)
+    *   LinkedIn: [https://www.linkedin.com/in/samuel-tuoyo/](https://www.linkedin.com/in/samuel-tuoyo/)
 
-    Create a new branch for your feature or bug fix.
+[![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 
-    ```bash
-    git checkout -b feature/your-feature
-    ```
-
-4.  **Test Your Changes**:
-
-    *   Run the client tests: `cd client && npm install && npm run lint`
-    *   Run the server: `cd server && go run main.go`
-
-5.  **Commit Your Changes**:
-
-    ```bash
-    git add .
-    git commit -m "Add: your feature or fix"
-    ```
-
-6.  **Push to Your Fork**:
-
-    ```bash
-    git push origin feature/your-feature
-    ```
-
-7.  **Submit a Pull Request**:
-
-    Submit a pull request to the main repository.
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-[![Built with Dokugen](https://img.shields.io/badge/Built%20with-Dokugen-brightgreen)](https://github.com/samueltuoyo15/Dokugen)
+[![Readme was generated by Dokugen](https://img.shields.io/badge/Built%20with-Dokugen-brightgreen)](https://github.com/samueltuoyo15/Dokugen)
