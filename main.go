@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"github.com/joho/godotenv"
 ) 
 
@@ -28,7 +29,7 @@ type VideoResponse struct {
 		Quality string `json:"quality"`
 		Width int `json:"width"`
 		Height int `json:"height"`
-		Ext string  `json"ext"`
+		Ext string `json:"ext"`
 	} `json:"medias"`
 	Error bool `json:"error"`
 }
@@ -134,7 +135,8 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 		fmt.Fprint(w, `<div class="text-red-500">No download links available</div>`)
 		return
 	}
-
+  
+  sanitizedTitle := strings.ReplaceAll(data.Title, "/", "-")
 	fmt.Fprintf(w, `
 	<div class="mt-6 mb-20 p-4 rounded-lg shadow-2xl" x-data="{ selectedUrl: '%s' }">
 		<h3 class="text-lg font-bold mb-4">Video Details</h3>
@@ -155,11 +157,11 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 	)
 
 	for _, media := range data.Medias {
-	  qualityLabel := media.Quality
+	  qualityLabel := strings.TrimSpace(media.Quality)
 	  if qualityLabel == ""{
 	    qualityLabel = fmt.Sprintf("%dx%d %s", media.Width, media.Height, media.Ext) 
 	  }
-		fmt.Fprintf(w, `<option value="%s">%d</option>`, media.URL, qualityLabel)
+		fmt.Fprintf(w, `<option value="%s">%s</option>`, media.URL, qualityLabel)
 	}
 
 	fmt.Fprint(w, `
@@ -171,12 +173,14 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 		const url = URL.createObjectURL(blob)
 		const a = document.createElement('a')
 		a.href = url
-		a.download = 'video.mp4'
-		a.click()
+		a.download = '%s.mp4'
+  	a.click()
 		URL.revokeObjectURL(url)
 	})"
 	class="cursor-pointer block mb-32 w-full mt-4 bg-red-900 text-center text-white p-3 rounded-md hover:bg-blue-600">
 	Download Video
 </button>
-	</div>`)
+	</div>`, sanitizedTitle)
 }
+
+
