@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ever Download is a free fuckin fast Golang & Htmx web application that allow users to download any YouTube, LinkedIn, Facebook, Twitter, Instagram videos, audios e.t.c into their device safely with no cost atol">
+  <meta name="description" content="Ever Download is a free fast Golang & Htmx web application that allow users to download any YouTube, LinkedIn, Facebook, Twitter, Instagram videos, audios e.t.c into their device safely with no cost atol">
   <meta name="author" content="Samuel Tuoyo" />
   <meta property="og:title" content="EverDownload - Free Video Downloader" />
   <meta property="og:description" content="EverDownload - Download YouTube, Instagram, etc. videos" />
-  <meta property="og:image" content="https://yourdomain.com/thumbnail.png" />
   <title>EverDownload</title>
   <link rel="preload" href="https://unpkg.com/htmx.org@1.9.6" as="script" />
   <link rel="preload" href="https://unpkg.com/alpinejs@3.12.0/dist/cdn.min.js" as="script" />
@@ -50,17 +49,25 @@
             required
             class="w-full text-black rounded p-3"
           />
-          <button type="submit" hx-disabled-elt="this" class="bg-neutral-800 text-white rounded ml-3 p-3 whitespace-nowrap">
-            Download  
-          </button>
+          <button 
+             :disabled="remaining === 0"
+            x-bind:class="{ 'opacity-50 cursor-not-allowed': remaining === 0 }"
+            type="submit"
+            hx-disabled-elt="this" 
+         class="bg-neutral-800 text-white rounded ml-3 p-3 whitespace-nowrap"
+         >
+        Download  
+       </button>
 
-      <div id="loading-indicator" class="htmx-indicator absolute inset-0 flex flex-col justify-center items-center bg-neutral-900 bg-opacity-70 z-10">
-            <img src="./public/spinning-dots.svg" alt="Loading..." class="w-20" />
-            <p class="block text-lg mt-2">Fetching Video Info...</p>
-          </div>
+          <div id="loading-indicator" class="htmx-indicator fixed inset-0 flex justify-center items-center bg-neutral-900 bg-opacity-80 z-50">
+           <img src="./public/spinning-dots.svg" alt="Loading..." class="w-32 h-32" />
+          <p class="text-xl mt-4">Fetching Video Info...</p>
+        </div>
+
         </form>
-
-        <div class="mt-4 text-sm" x-text="`Rate limit remaining: ${remaining} out of 4 requests`"></div>
+        <div class="mt-4 text-sm" x-text="`Rate limit remaining: ${remaining} out of 4 requests`">
+          <p x-show="remaining === 0" class="text-red-500 mt-4">You've hit your limit. Try again in 24 hours.</p>
+        </div>
       </div>
 
       <div id="result-container" class="mt-6 w-full max-w-2xl"></div>
@@ -73,5 +80,14 @@
 
   <script src="https://unpkg.com/htmx.org@1.9.6"></script>
   <script src="https://unpkg.com/alpinejs@3.12.0/dist/cdn.min.js"></script>
+<script>
+  document.body.addEventListener('htmx:afterRequest', function () {
+    fetch('/rate-info')
+      .then(res => res.json())
+      .then(data => {
+        document.querySelector('[x-data]').__x.$data.remaining = data.remaining
+      })
+  })
+</script>
 </body>
 </html>
