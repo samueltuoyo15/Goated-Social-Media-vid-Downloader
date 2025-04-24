@@ -126,6 +126,16 @@ func main() {
 }
 
 func fetchVideoMetaData(videoURL, apiKey string) (*VideoResponse, error) {
+  cacheKey := fmt.Sprintf("video_meta: %s", videoURL)
+  cacheData, err := rdb.Get(ctx , cacheKey).Result()
+	if err == nil{
+	  var cachedResult VideoResponse
+	  if jsonErr := json.Unmarshal([]byte(cacheData),&cachedResult); jsonErr == nil{
+	    log.Println("Cache Hit", "Serving from redis")
+	    return &cachedResult, nil
+	  }
+	}
+	
 	payload := VideoRequest{URL: videoURL}
 	jsonPayload, err := json.Marshal(payload)
 	if err != nil {
@@ -161,7 +171,9 @@ func fetchVideoMetaData(videoURL, apiKey string) (*VideoResponse, error) {
 	if err := json.Unmarshal(body, &result); err != nil {
 		return nil, err
 	}
-
+  
+  jsonResult, _ := json.Marshal(result) 
+  rdb.Set(ctx, cacheKey, jsonResult, 24*time.Hour)
 	return &result, nil
 }
 
