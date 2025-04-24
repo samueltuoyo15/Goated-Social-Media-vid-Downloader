@@ -18,6 +18,8 @@ Get EverDownload up and running in a few simple steps:
     *   Create a `.env` file in the root directory.
         ```
         SECRET_KEY=YOUR_SECRET_KEY
+        REDIS_URL=
+        REDIS_PASSWORD=
         PORT=3000 # Optional: Change the port if needed
         ```
 
@@ -54,6 +56,7 @@ Get EverDownload up and running in a few simple steps:
 *   🔒 **Secure**: Utilizes secure API requests for fetching video metadata.
 *   📱 **Responsive Design**:  Works seamlessly on desktops, tablets, and mobile devices.
 *   🎨 **Modern UI**:  Clean and intuitive user interface using Tailwind CSS and Alpine.js.
+*   🎉 **Caching and Rate Limiting**:  Cached Meat Data and videos balzing fast.
 
 ## ⚙️ Technologies Used
 
