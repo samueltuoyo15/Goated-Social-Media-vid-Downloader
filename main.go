@@ -154,7 +154,7 @@ func fetchVideoMetaData(videoURL, apiKey string) (*VideoResponse, error) {
   cacheData, err := rdb.Get(ctx , cacheKey).Result()
 		if err == nil {
 		var v VideoResponse
-		if json.Unmarshal([]byte(cachedData), &v) == nil {
+		if json.Unmarshal([]byte(cacheData), &v) == nil {
 			log.Println("Cache hit")
 			return &v, nil
 		}
@@ -197,7 +197,7 @@ func fetchVideoMetaData(videoURL, apiKey string) (*VideoResponse, error) {
 
 }
 
-func renderVideoData(w io.Writer, data *VideoResponse) {
+func renderVideoData(w io.Writer, data *VideoResponse, remaining int) {
 	if len(data.Medias) == 0 {
 		fmt.Fprint(w, `<div class="text-red-500">No download links available</div>`)
 		return
@@ -205,7 +205,7 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
   
   sanitizedTitle := strings.ReplaceAll(data.Title, "/", "-")
 	fmt.Fprintf(w, `
-	<div class="mt-6 mb-20 p-4 rounded-lg shadow-2xl" x-data="{ selectedUrl: '%s' }">
+<div class="mt-6 mb-20 p-4 rounded-lg shadow-2xl" x-data="{ selectedUrl: '%s', remaining: %d }">
 		<h3 class="text-lg font-bold mb-4">Video Details</h3>
 		<img src="%s" alt="Video Thumbnail" class="w-full rounded-md mb-4" />
 		<p class="text-white mb-2"><strong>Title:</strong> %s</p>
@@ -216,6 +216,7 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 			<label for="qualitySelect" class="block mb-2">Select Quality</label>
 			<select id="qualitySelect" x-model="selectedUrl" class="w-full p-2 bg-neutral-800 text-white rounded-md border">`,
 		data.Medias[0].URL,
+		remaining,
 		data.Thumbnail,
 		data.Title,
 		data.Source,
@@ -234,7 +235,6 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 	fmt.Fprintf(w, `
   </select>
 </div>
-<script>document.querySelector('[x-data]').__x.$data.remaining = %d</script>
   <a 
   x-bind:href="'/download?url=' + encodeURIComponent(selectedUrl) + '&filename=%s.mp4'" 
   class="block mb-32 w-full mt-4 bg-red-900 text-center text-white p-3 rounded-md hover:bg-blue-600"
