@@ -12,6 +12,7 @@ import (
 	"github.com/joho/godotenv"
 	"context"
 	"time"
+	"crypto/tls"
 	"github.com/redis/go-redis/v9"
 ) 
 
@@ -57,9 +58,16 @@ func main() {
   rdb = redis.NewClient(&redis.Options{
 	  Addr: os.Getenv("REDIS_URL"),
   	Password: os.Getenv("REDIS_PASSWORD"),             
-  	DB: 0,           
+  	DB: 0,  
+  	TLSConfig: &tls.Config{},
 })
-
+ 
+ 
+ pong, err := rdb.Ping(ctx).Result()
+   if err != nil {
+  	log.Fatalf("Redis connection failed: %v", err)
+   }
+  fmt.Println("Redis connected:", pong)
 
 	fs := http.FileServer(http.Dir("client"))
 	http.Handle("/", fs)
