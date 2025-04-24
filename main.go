@@ -89,9 +89,9 @@ func main() {
 			http.Error(w, fmt.Sprintf("Error fetching video meta data: %v", err), http.StatusInternalServerError)
 			return
 		}
-
+    remaining := getRemainingLimit(r)
 		w.Header().Set("Content-Type", "text/html")
-		renderVideoData(w, videoData)
+		renderVideoData(w, videoData, remaining)
 	}))
 
 	http.HandleFunc("/download", rateLimit(func(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +124,23 @@ func main() {
      log.Printf("Error Streaming Video %v", err)
    }
 	}))
+ 
+ 
+ http.HandleFunc("/rate-info", func(w http.ResponseWriter, r *http.Request) {
+		ip := getIP(r)
+		key := fmt.Sprintf("rate_limit:%s:%s", ip, time.Now().Format("2006-01-02"))
 
+		count, _ := rdb.Get(ctx, key).Int()
+		remaining := 4 - count
+		if remaining < 0 {
+			remaining = 0
+		}
+    
+    w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]int{"remaining": remaining})
+	})
+	
+	
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
@@ -134,14 +150,14 @@ func main() {
 }
 
 func fetchVideoMetaData(videoURL, apiKey string) (*VideoResponse, error) {
-  cacheKey := fmt.Sprintf("video_meta: %s", videoURL)
+  cacheKey := fmt.Sprintf("video_meta:%s", videoURL)
   cacheData, err := rdb.Get(ctx , cacheKey).Result()
-	if err == nil{
-	  var cachedResult VideoResponse
-	  if jsonErr := json.Unmarshal([]byte(cacheData),&cachedResult); jsonErr == nil{
-	    log.Println("Cache Hit", "Serving from redis")
-	    return &cachedResult, nil
-	  }
+		if err == nil {
+		var v VideoResponse
+		if json.Unmarshal([]byte(cachedData), &v) == nil {
+			log.Println("Cache hit")
+			return &v, nil
+		}
 	}
 	
 	payload := VideoRequest{URL: videoURL}
@@ -169,20 +185,16 @@ func fetchVideoMetaData(videoURL, apiKey string) (*VideoResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
+	body, _ := io.ReadAll(resp.Body)
 	var result VideoResponse
-	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, err
+	if json.Unmarshal(body, &result) != nil || result.Error {
+		return &result, nil
 	}
-  
-  jsonResult, _ := json.Marshal(result) 
-  rdb.Set(ctx, cacheKey, jsonResult, 24*time.Hour)
+
+	cachedData, _ := json.Marshal(result)
+	rdb.Set(ctx, cacheKey, cachedData, 8*time.Minute)
 	return &result, nil
+
 }
 
 func renderVideoData(w io.Writer, data *VideoResponse) {
@@ -199,7 +211,7 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 		<p class="text-white mb-2"><strong>Title:</strong> %s</p>
 		<p class="text-white mb-2"><strong>Source:</strong> %s</p>
 		<p class="text-white mb-2"><strong>Author:</strong> %s</p>
-		<p class="text-white mb-2"><strong>Duration:</strong></p>
+		<p class="text-white mb-2"><strong>Duration:</strong>%d</p>
 		<div class="mt-4">
 			<label for="qualitySelect" class="block mb-2">Select Quality</label>
 			<select id="qualitySelect" x-model="selectedUrl" class="w-full p-2 bg-neutral-800 text-white rounded-md border">`,
@@ -219,17 +231,18 @@ func renderVideoData(w io.Writer, data *VideoResponse) {
 		fmt.Fprintf(w, `<option value="%s">%s</option>`, media.URL, qualityLabel)
 	}
 
-	fmt.Fprint(w, `
-			</select>
-		</div>
+	fmt.Fprintf(w, `
+  </select>
+</div>
+<script>document.querySelector('[x-data]').__x.$data.remaining = %d</script>
   <a 
   x-bind:href="'/download?url=' + encodeURIComponent(selectedUrl) + '&filename=%s.mp4'" 
   class="block mb-32 w-full mt-4 bg-red-900 text-center text-white p-3 rounded-md hover:bg-blue-600"
-  download
-   >
-    Download Video
-   </a>
-	</div>`, sanitizedTitle)
+ download
+ >
+  Download Video
+ </a>
+</div>`, sanitizedTitle, remaining)
 }
 
 
@@ -270,3 +283,28 @@ func rateLimit(next http.HandlerFunc) http.HandlerFunc {
         next(w, r)
     }
 }
+
+
+func getIP(r *http.Request) string {
+	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
+		return strings.Split(forwarded, ",")[0]
+	}
+	return strings.Split(r.RemoteAddr, ":")[0]
+}
+
+func getRemainingLimit(r *http.Request) int {
+	ip := getIP(r)
+	key := fmt.Sprintf("rate_limit:%s:%s", ip, time.Now().Format("2006-01-02"))
+	count, _ := rdb.Get(ctx, key).Int()
+	remaining := 4 - count
+	if remaining < 0 {
+		remaining = 0
+	}
+	return remaining
+}
+
+
+
+
+
+
